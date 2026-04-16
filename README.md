@@ -12,17 +12,11 @@ In robotics, vision-language models (VLMs) support tasks that require perception
 
 ## Method
 
-At each decoding step \(t\), EVII measures how much the next-token distribution changes when the image is removed. Concretely, it computes the Jensen--Shannon divergence between the image-conditioned distribution \(p_t^{\text{img}}\) and the no-image distribution \(p_t^{\text{no-img}}\), while keeping the generated prefix fixed.
+At each decoding step *t*, EVII computes the Jensen–Shannon divergence between the image-conditioned next-token distribution *p*img*t* and the no-image distribution *p*noimg*t* evaluated on the same generated prefix:
 
-\[
-\mathrm{EVII}(k)
-=
-\frac{1}{k}
-\sum_{t=1}^{k}
-\mathrm{JSD}\!\left(p_t^{\text{img}} \,\|\, p_t^{\text{no-img}}\right)
-\]
+> **EVII(*k*)** = (1/*k*) Σ*t*=1...*k* JSD(*p*img*t* ∥ *p*noimg*t*)
 
-A larger divergence at step \(t\) means that the model's next-token distribution is more strongly affected by visual input. A smaller divergence suggests that the model is relying more on language-only information.
+A larger divergence at step *t* indicates that the model's next-token behavior is more strongly influenced by the image; a smaller divergence suggests greater reliance on language-only information.
 
 Rather than fixing *k* globally, we select it adaptively per example using Bayesian Online Changepoint Detection (BOCPD) with a Beta-family predictive model over the no-image JS signal, bounded to at most the first 40 generated tokens (*K*cap = 40). This identifies the point at which early visual influence begins to stabilise, yielding an example-specific integration horizon.
 
