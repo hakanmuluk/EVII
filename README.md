@@ -1,6 +1,6 @@
 # EVII: Early Visual Information Integration
 
-Official repository for the paper *Early Visual Information Integration (EVII)*.
+Official repository for the paper *EVII: Measuring Early Visual Integration in VLM Reasoning*.
 
 ---
 
